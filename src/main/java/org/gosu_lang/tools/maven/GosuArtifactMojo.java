@@ -84,6 +84,10 @@ public class GosuArtifactMojo
       artifacts.add(artifact);
     }
 
+    artifact = _factory.createArtifact("gw", "gosu-test-api", gosuVersion, "test", "jar");
+    getLog().info("Inserting " + artifact + " into the test classpath");
+    artifacts.add(artifact);
+
     project.setDependencyArtifacts(artifacts);
   }
 }

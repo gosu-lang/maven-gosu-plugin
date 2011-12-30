@@ -4,7 +4,7 @@
 
   <groupId>org.gosu-lang</groupId>
   <artifactId>maven-gosu-plugin</artifactId>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>Maven tools for Gosu projects</name>

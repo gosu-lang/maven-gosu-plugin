@@ -74,17 +74,17 @@ public class GosuArtifactMojo
       }
     }
 
-    Artifact artifact = _factory.createArtifact("gw", "gosu", gosuVersion, "compile", "pom");
+    Artifact artifact = _factory.createArtifact("org.gosu-lang.gosu", "gosu", gosuVersion, "compile", "pom");
     getLog().info("Inserting " + artifact + " into the compile classpath.");
     artifacts.add(artifact);
 
     if (includeImpl) {
-      artifact = _factory.createArtifact("gw", "gosu-core", gosuVersion, "compile", "jar");
+      artifact = _factory.createArtifact("org.gosu-lang.gosu", "gosu-core", gosuVersion, "compile", "jar");
       getLog().info("Inserting " + artifact + " into the compile classpath. Naughty!");
       artifacts.add(artifact);
     }
 
-    artifact = _factory.createArtifact("gw", "gosu-test-api", gosuVersion, "test", "jar");
+    artifact = _factory.createArtifact("org.gosu-lang.gosu", "gosu-test-api", gosuVersion, "test", "jar");
     getLog().info("Inserting " + artifact + " into the test classpath");
     artifacts.add(artifact);
 

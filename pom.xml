@@ -50,7 +50,7 @@
     <repository>
       <uniqueVersion>true</uniqueVersion>
       <id>gosu-lang.org</id>
-      <url>scp://gosu-lang.org/var/www/html/m2</url>
+      <url>scp://gosu-lang.org/var/www/html/repositories/m2/releases</url>
       <layout>default</layout>
     </repository>
   </distributionManagement>

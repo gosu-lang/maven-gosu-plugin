@@ -4,7 +4,7 @@
 
   <groupId>org.gosu-lang</groupId>
   <artifactId>maven-gosu-plugin</artifactId>
-  <version>1.1</version>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Maven tools for Gosu projects</name>
@@ -22,6 +22,12 @@
     </dependency>
   </dependencies>
 
+  <scm>
+    <connection>scm:git:git@github.com:gosu-lang/maven-gosu-plugin.git</connection>
+    <url>scm:git:git@github.com:gosu-lang/maven-gosu-plugin.git</url>
+    <developerConnection>scm:git:git@github.com:gosu-lang/maven-gosu-plugin.git</developerConnection>
+  </scm>
+
   <build>
     <plugins>
       <plugin>
@@ -37,22 +43,21 @@
         </configuration>
       </plugin>
     </plugins>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-         <artifactId>wagon-ssh</artifactId>
-         <version>2.1</version>
-      </extension>
-    </extensions>
   </build>
 
   <distributionManagement>
     <repository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>gosu-lang.org</id>
-      <url>scp://gosu-lang.org/var/www/html/repositories/m2/releases</url>
+      <uniqueVersion>false</uniqueVersion>
+      <id>gosu-lang.org-gosu</id>
+      <url>http://gosu-lang.org/nexus/content/repositories/gosu/</url>
       <layout>default</layout>
     </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>gosu-lang.org-snapshots</id>
+      <url>http://gosu-lang.org/nexus/content/repositories/snapshots/</url>
+      <layout>default</layout>
+    </snapshotRepository>
   </distributionManagement>
 
 </project>

@@ -22,10 +22,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -38,6 +34,11 @@ import java.util.Set;
 public class GosuArtifactMojo
     extends AbstractMojo
 {
+  private static final String GOSU_GROUPID = "org.gosu-lang.gosu";
+  private static final String CORE_API_ARTIFACTID = "gosu-core-api";
+  private static final String CORE_ARTIFACTID = "gosu-core";
+  private static final String TEST_API_ARTIFACTID = "gosu-test-api";
+
   /**
    * Used to look up Artifacts in the remote repository.
    *
@@ -53,6 +54,7 @@ public class GosuArtifactMojo
    * @parameter
    * @required
    */
+  @SuppressWarnings("UnusedDeclaration")
   private String gosuVersion;
 
   /**
@@ -60,32 +62,46 @@ public class GosuArtifactMojo
    *
    * @parameter default-value=false
    */
+  @SuppressWarnings("UnusedDeclaration")
   private boolean includeImpl;
+
+  /**
+   * Include gosu-test-api in the compile classpath.
+   *
+   * @parameter default-value=false
+   */
+  @SuppressWarnings("UnusedDeclaration")
+  private boolean includeTestApi;
 
   public void execute() throws MojoExecutionException {
     MavenProject project = (MavenProject)getPluginContext().get("project");
 
-    LinkedHashSet artifacts = new LinkedHashSet(project.getDependencyArtifacts());
+    @SuppressWarnings("unchecked") Set<Artifact> artifacts = (Set<Artifact>) project.getDependencyArtifacts();
 
-    for (Object o : artifacts) {
-      Artifact artifact = (Artifact)o;
-      if ("gw".equals(artifact.getGroupId()) && artifact.getArtifactId().startsWith("gosu")) {
+    for (Artifact artifact : artifacts) {
+      String artifactId = artifact.getArtifactId();
+      String groupId = artifact.getGroupId();
+      if (GOSU_GROUPID.equals(groupId) &&
+              (CORE_API_ARTIFACTID.equals(artifactId)
+                || CORE_ARTIFACTID.equals(artifactId)
+                || TEST_API_ARTIFACTID.equals(artifactId))) {
         throw new MojoExecutionException("Your project cannot explicitly depend on Gosu artifacts with this plugin in use (" + artifact + ")");
       }
     }
 
-    Artifact artifact = _factory.createArtifact("org.gosu-lang.gosu", "gosu", gosuVersion, "compile", "pom");
+    Artifact artifact = _factory.createArtifact(GOSU_GROUPID, CORE_API_ARTIFACTID, gosuVersion, "compile", "jar");
     getLog().info("Inserting " + artifact + " into the compile classpath.");
     artifacts.add(artifact);
 
     if (includeImpl) {
-      artifact = _factory.createArtifact("org.gosu-lang.gosu", "gosu-core", gosuVersion, "compile", "jar");
+      artifact = _factory.createArtifact(GOSU_GROUPID, CORE_ARTIFACTID, gosuVersion, "compile", "jar");
       getLog().info("Inserting " + artifact + " into the compile classpath. Naughty!");
       artifacts.add(artifact);
     }
 
-    artifact = _factory.createArtifact("org.gosu-lang.gosu", "gosu-test-api", gosuVersion, "test", "jar");
-    getLog().info("Inserting " + artifact + " into the test classpath");
+    String testApiScope = includeTestApi ? "compile" : "test";
+    artifact = _factory.createArtifact(GOSU_GROUPID, TEST_API_ARTIFACTID, gosuVersion, testApiScope, "jar");
+    getLog().info("Inserting " + artifact + " into the " + testApiScope + " classpath");
     artifacts.add(artifact);
 
     project.setDependencyArtifacts(artifacts);

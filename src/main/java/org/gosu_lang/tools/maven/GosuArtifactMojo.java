@@ -85,7 +85,8 @@ public class GosuArtifactMojo
               (CORE_API_ARTIFACTID.equals(artifactId)
                 || CORE_ARTIFACTID.equals(artifactId)
                 || TEST_API_ARTIFACTID.equals(artifactId))) {
-        throw new MojoExecutionException("Your project cannot explicitly depend on Gosu artifacts with this plugin in use (" + artifact + ")");
+        getLog().warn("Your project should not explicitly depend on Gosu artifacts with this plugin in use (" + artifact + ")");
+        return;
       }
     }
 

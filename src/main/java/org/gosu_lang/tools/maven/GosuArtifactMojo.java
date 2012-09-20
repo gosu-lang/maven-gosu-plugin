@@ -39,7 +39,6 @@ public class GosuArtifactMojo
   private static final String GOSU_GROUPID = "org.gosu-lang.gosu";
   private static final String CORE_API_ARTIFACTID = "gosu-core-api";
   private static final String CORE_ARTIFACTID = "gosu-core";
-  private static final String TEST_API_ARTIFACTID = "gosu-test-api";
 
   /**
    * Used to look up Artifacts in the remote repository.
@@ -85,8 +84,7 @@ public class GosuArtifactMojo
       String groupId = dep.getGroupId();
       if (GOSU_GROUPID.equals(groupId) &&
               (CORE_API_ARTIFACTID.equals(artifactId)
-                || CORE_ARTIFACTID.equals(artifactId)
-                || TEST_API_ARTIFACTID.equals(artifactId))) {
+                || CORE_ARTIFACTID.equals(artifactId))) {
         throw new MojoExecutionException("Your project cannot explicitly depend on Gosu artifacts with this plugin in use (" + dep + ")");
       }
     }
@@ -105,13 +103,6 @@ public class GosuArtifactMojo
       if (!artifacts.contains(artifact)) {
         artifacts.add(artifact);
       }
-    }
-
-    String testApiScope = includeTestApi ? "compile" : "test";
-    artifact = _factory.createArtifact(GOSU_GROUPID, TEST_API_ARTIFACTID, gosuVersion, testApiScope, "jar");
-    getLog().info("Inserting " + artifact + " into the " + testApiScope + " classpath");
-    if (!artifacts.contains(artifact)) {
-      artifacts.add(artifact);
     }
   }
 }
